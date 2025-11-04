@@ -1,7 +1,7 @@
 {
-  "name": "backend-farmacia",
+  "name": "backend-turnos",
   "version": "1.0.0",
-  "description": "TP3 Farmacia - Backend Express",
+  "description": "TP3 Turnos - Backend",
   "main": "server.js",
   "type": "module",
   "scripts": {
