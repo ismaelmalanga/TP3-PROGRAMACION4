@@ -10,5 +10,5 @@ export async function conectarDB() {
         database: process.env.DB_NAME,
     });
 
-    console.log("✅ Conectado a la base de datos MySQL");
+    console.log("Conectado a la base de datos MySQL");
 }
