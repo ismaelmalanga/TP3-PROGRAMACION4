@@ -17,7 +17,7 @@ app.use(cors());
 authConfig();
 
 app.get("/", (req, res) => {
-  res.send("API de gestión de pacientes, médicos y turnos 🏥");
+    res.send("API de gestión de pacientes, médicos y turnos ");
 });
 
 app.use("/usuarios", usuariosRouter);
@@ -27,5 +27,5 @@ app.use("/turnos", turnosRouter);
 app.use("/auth", authRouter);
 
 app.listen(port, () => {
-  console.log(`✅ Servidor funcionando en el puerto ${port}`);
+    console.log(` Servidor funcionando en el puerto ${port}`);
 });
