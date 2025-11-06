@@ -1,0 +1,51 @@
+# pruebas para API de médicos
+@url = http://localhost:3000
+
+### Login
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "pepe@example.com",
+    "password": "hola1234"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Consultar médicos
+GET {{url}}/medicos
+Authorization: Bearer {{token}}
+
+### Consultar médico por ID
+GET {{url}}/medicos/1
+Authorization: Bearer {{token}}
+
+### Crear médico
+POST {{url}}/medicos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Laura",
+    "apellido": "García",
+    "especialidad": "Pediatría",
+    "matricula": "MP12345"
+}
+
+### Modificar médico
+PUT {{url}}/medicos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Laura",
+    "apellido": "García Modificada",
+    "especialidad": "Cardiología",
+    "matricula": "MP54321"
+}
+
+### Eliminar médico
+DELETE {{url}}/medicos/1
+Authorization: Bearer {{token}}
