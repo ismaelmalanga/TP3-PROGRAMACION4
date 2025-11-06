@@ -1,0 +1,48 @@
+# pruebas para API de usuarios
+@url = http://localhost:3000
+
+### Login
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "pepe@example.com",
+    "password": "hola1234"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Consultar usuarios
+GET {{url}}/usuarios
+Authorization: Bearer {{token}}
+
+### Consultar usuario por ID
+GET {{url}}/usuarios/1
+Authorization: Bearer {{token}}
+
+### Crear usuario
+POST {{url}}/usuarios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Carlos",
+    "email": "carlos@example.com",
+    "contraseña": "hola1234"
+}
+
+### Modificar usuario
+PUT {{url}}/usuarios/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Carlos Modificado",
+    "email": "carlosmod@example.com"
+}
+
+### Eliminar usuario
+DELETE {{url}}/usuarios/1
+Authorization: Bearer {{token}}
