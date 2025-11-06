@@ -1,0 +1,15 @@
+# Archivo de pruebas para autenticación de usuarios
+@url = http://localhost:3000
+
+### Login
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "pepe@example.com",
+    "password": "hola1234"
+}
+
+###
+@token = {{login.response.body.token}}
