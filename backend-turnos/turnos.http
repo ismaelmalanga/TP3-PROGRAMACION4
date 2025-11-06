@@ -1,0 +1,51 @@
+# pruebas API de turnos
+@url = http://localhost:3000
+
+### Login
+# @name login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "pepe@example.com",
+    "password": "hola1234"
+}
+
+###
+@token = {{login.response.body.token}}
+
+### Consultar turnos
+GET {{url}}/turnos
+Authorization: Bearer {{token}}
+
+### Consultar turno por ID
+GET {{url}}/turnos/1
+Authorization: Bearer {{token}}
+
+### Crear turno
+POST {{url}}/turnos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "fecha": "2025-11-10",
+    "hora": "10:30:00",
+    "estado": "pendiente",
+    "observaciones": "Control de rutina",
+    "id_paciente": 1,
+    "id_medico": 1
+}
+
+### Modificar turno
+PUT {{url}}/turnos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "estado": "atendido",
+    "observaciones": "Consulta completada"
+}
+
+### Eliminar turno
+DELETE {{url}}/turnos/1
+Authorization: Bearer {{token}}
