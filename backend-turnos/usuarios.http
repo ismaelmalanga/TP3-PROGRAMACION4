@@ -1,13 +1,24 @@
 # pruebas para API de usuarios
 @url = http://localhost:3000
 
+### Crear usuario (registro)
+# Este paso se hace solo una vez para registrar el primer usuario (admin, por ejemplo)
+POST {{url}}/usuarios
+Content-Type: application/json
+
+{
+    "nombre": "Admin",
+    "email": "admin@mail.com",
+    "contraseña": "hola1234"
+}
+
 ### Login
 # @name login
 POST {{url}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "pepe@example.com",
+    "email": "admin@mail.com",
     "password": "hola1234"
 }
 
@@ -22,7 +33,7 @@ Authorization: Bearer {{token}}
 GET {{url}}/usuarios/1
 Authorization: Bearer {{token}}
 
-### Crear usuario
+### Crear usuario (desde sesión autenticada)
 POST {{url}}/usuarios
 Authorization: Bearer {{token}}
 Content-Type: application/json
