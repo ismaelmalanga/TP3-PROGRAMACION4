@@ -1,4 +1,4 @@
-# Archivo de pruebas para autenticación de usuarios
+#pruebas para autenticación de usuarios
 @url = http://localhost:3000
 
 ### Login
