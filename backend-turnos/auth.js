@@ -1,11 +1,11 @@
 import express from "express";
+import { db } from "./db.js";
+import { verificarValidaciones } from "./validaciones.js";
+import { body } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
-import { db } from "./db.js";
-import { body } from "express-validator";
-import { verificarValidaciones } from "./validaciones.js";
 
 const router = express.Router();
 
@@ -16,8 +16,8 @@ export function authConfig() {
     };
 
     passport.use(
-        new Strategy(jwtOptions, async (payload, done) => {
-            done(null, payload);
+        new Strategy(jwtOptions, async (payload, next) => {
+            next(null, payload);
         })
     );
 }
@@ -26,35 +26,51 @@ export const verificarAutenticacion = passport.authenticate("jwt", {
     session: false,
 });
 
-// Login
 router.post(
     "/login",
-    body("email").isEmail().isLength({ max: 100 }),
-    body("contraseña").isLength({ min: 8 }),
+    body("email", "Email inválido").isEmail().isLength({ max: 100 }),
+    body("password", "Contraseña inválida").isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 0,
+        minNumbers: 1,
+        minSymbols: 0,
+    }),
     verificarValidaciones,
     async (req, res) => {
-        const { email, contraseña } = req.body;
+        const { email, password } = req.body;
 
-        const [rows] = await db.execute(
-            "SELECT * FROM usuarios WHERE email = ?",
+        
+        const [usuarios] = await db.execute(
+            "SELECT * FROM usuarios WHERE email=?",
             [email]
         );
 
-        if (rows.length === 0) {
-            return res.status(400).json({ success: false, message: "Usuario no encontrado" });
+        if (usuarios.length === 0) {
+            return res
+                .status(400)
+                .json({ success: false, error: "Email inválido o no registrado" });
         }
 
-        const usuario = rows[0];
-        const esValida = await bcrypt.compare(contraseña, usuario.contraseña);
+        
+        const hashedPassword = usuarios[0].contraseña;
+        const passwordComparada = await bcrypt.compare(password, hashedPassword);
 
-        if (!esValida) {
-            return res.status(400).json({ success: false, message: "Contraseña incorrecta" });
+        if (!passwordComparada) {
+            return res
+                .status(400)
+                .json({ success: false, error: "Contraseña incorrecta" });
         }
 
-        const payload = { id_usuario: usuario.id_usuario, email: usuario.email };
+        
+        const payload = { userId: usuarios[0].id_usuario };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "4h" });
 
-        res.json({ success: true, token, nombre: usuario.nombre, email: usuario.email });
+        res.json({
+            success: true,
+            token,
+            email: usuarios[0].email,
+        });
     }
 );
 
