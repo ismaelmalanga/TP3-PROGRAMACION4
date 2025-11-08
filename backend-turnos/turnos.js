@@ -54,13 +54,15 @@ router.post(
     body("id_medico").isInt({ min: 1 }),
     body("fecha").isISO8601(),
     body("hora").matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
+    // 1. AÑADIMOS LA VALIDACIÓN (opcional, como en tu PUT)
+    body("observaciones").optional().isString().isLength({ max: 255 }),
     verificarValidaciones,
     async (req, res) => {
-        const { id_paciente, id_medico, fecha, hora } = req.body;
+        const { id_paciente, id_medico, fecha, hora, observaciones } = req.body;
 
         await db.execute(
-            "INSERT INTO turnos (id_paciente, id_medico, fecha, hora, estado) VALUES (?,?,?,?, 'pendiente')",
-            [id_paciente, id_medico, fecha, hora]
+            "INSERT INTO turnos (id_paciente, id_medico, fecha, hora, estado, observaciones) VALUES (?,?,?,?, 'pendiente', ?)",
+            [id_paciente, id_medico, fecha, hora, observaciones || null]
         );
 
         res.status(201).json({ success: true, message: "Turno creado" });
