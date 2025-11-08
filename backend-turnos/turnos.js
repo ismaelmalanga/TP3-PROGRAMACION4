@@ -8,15 +8,43 @@ const router = express.Router();
 
 // obtener todos los turnos
 router.get("/", verificarAutenticacion, async (req, res) => {
-    const [rows] = await db.execute(
-        "SELECT t.id_turno, t.fecha, t.hora, t.estado, t.observaciones, \
-        p.nombre AS paciente, m.nombre AS medico \
-        FROM turnos t \
-        JOIN pacientes p ON t.id_paciente = p.id_paciente \
-        JOIN medicos m ON t.id_medico = m.id_medico"
-    );
+    const [rows] = await db.execute(`
+        SELECT t.id_turno, t.fecha, t.hora, t.estado, t.observaciones,
+               p.nombre AS paciente, m.nombre AS medico
+        FROM turnos t
+        JOIN pacientes p ON t.id_paciente = p.id_paciente
+        JOIN medicos m ON t.id_medico = m.id_medico
+    `);
     res.json({ success: true, turnos: rows });
 });
+
+// obtener turno por ID
+router.get(
+    "/:id",
+    verificarAutenticacion,
+    validarId,
+    verificarValidaciones,
+    async (req, res) => {
+        const id = Number(req.params.id);
+        const [rows] = await db.execute(
+            "SELECT t.id_turno, t.fecha, t.hora, t.estado, t.observaciones, \
+            p.nombre AS paciente, m.nombre AS medico \
+            FROM turnos t \
+            JOIN pacientes p ON t.id_paciente = p.id_paciente \
+            JOIN medicos m ON t.id_medico = m.id_medico \
+            WHERE t.id_turno = ?",
+            [id]
+        );
+
+        if (rows.length === 0)
+            return res
+                .status(404)
+                .json({ success: false, message: "Turno no encontrado" });
+
+        res.json({ success: true, turno: rows[0] });
+    }
+);
+
 
 // crear turno
 router.post(
@@ -52,11 +80,12 @@ router.put(
         const { estado, observaciones } = req.body;
 
         const [rows] = await db.execute("SELECT * FROM turnos WHERE id_turno=?", [id]);
-        if (rows.length === 0)
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Turno no encontrado",
             });
+        }
 
         await db.execute(
             "UPDATE turnos SET estado=?, observaciones=? WHERE id_turno=?",
@@ -77,15 +106,19 @@ router.delete(
         const id = Number(req.params.id);
 
         const [rows] = await db.execute("SELECT * FROM turnos WHERE id_turno=?", [id]);
-        if (rows.length === 0)
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Turno no encontrado",
             });
+        }
 
         await db.execute("DELETE FROM turnos WHERE id_turno=?", [id]);
         res.json({ success: true, message: "Turno eliminado" });
     }
 );
+
+
+
 
 export default router;
