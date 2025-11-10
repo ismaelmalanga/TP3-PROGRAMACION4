@@ -42,7 +42,7 @@ export const Pacientes = () => {
                             <td>{p.dni}</td>
                             
                             <td>
-                                <Link to={`/pacientes/${p.id_paciente}`}>Ver</Link>{" "}
+                                <Link to={`/pacientes/${p.id_paciente}`}>Ver detalles</Link>{" "}
                                 <Link to={`/pacientes/${p.id_paciente}/modificar`}>Editar</Link>{" "}
                                 <button onClick={() => handleEliminar(p.id_paciente)}>Eliminar</button>
                             </td>
