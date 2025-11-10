@@ -2,7 +2,7 @@
 @url = http://localhost:3000
 
 ### Crear usuario (registro)
-# Este paso se hace solo una vez para registrar el primer usuario (admin, por ejemplo)
+# Este paso hay que hacerlo una vez para registrar el primer usuario (admin, por ejemplo) 
 POST {{url}}/usuarios
 Content-Type: application/json
 
