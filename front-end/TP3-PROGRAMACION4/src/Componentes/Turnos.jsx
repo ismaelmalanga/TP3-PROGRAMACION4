@@ -63,7 +63,7 @@ export const Turnos = () => {
                             <td>{t.observaciones || "-"}</td>
                             <td>
                                 <div style={{ display: "flex", gap: "5px" }}>
-                                    <Link role="button" to={`/turnos/${t.id_turno}`}>Ver</Link>
+                                    <Link role="button" to={`/turnos/${t.id_turno}`}>Ver Detalles</Link>
                                     <Link role="button" to={`/turnos/${t.id_turno}/modificar`}>Editar</Link>
                                     <button onClick={() => handleEliminar(t.id_turno)}>Eliminar</button>
                                 </div>
