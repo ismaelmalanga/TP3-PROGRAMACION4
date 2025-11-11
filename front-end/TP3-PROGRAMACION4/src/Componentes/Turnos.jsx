@@ -57,8 +57,9 @@ export const Turnos = () => {
                             <td>{t.id_turno}</td>
                             <td>{t.paciente}</td>
                             <td>{t.medico}</td>
-                            <td>{t.fecha}</td>
-                            <td>{t.hora}</td>
+                            <td>{new Date(t.fecha).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })}</td>
+                            <td>{t.hora ? t.hora.slice(0, 5) : "-"}</td>
+
                             <td>{t.estado}</td>
                             <td>{t.observaciones || "-"}</td>
                             <td>
