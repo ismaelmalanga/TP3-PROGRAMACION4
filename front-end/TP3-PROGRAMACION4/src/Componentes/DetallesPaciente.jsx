@@ -18,13 +18,16 @@ export const DetallesPaciente = () => {
 
     if (!paciente) return null;
 
+    const fechaFormateada = new Date(paciente.fecha_nacimiento).toLocaleDateString("es-AR", {day: "2-digit",month: "2-digit",year: "numeric",
+    });
+
     return (
         <article>
             <h2>Detalles del Paciente</h2>
             <p><b>Nombre:</b> {paciente.nombre}</p>
             <p><b>Apellido:</b> {paciente.apellido}</p>
             <p><b>DNI:</b> {paciente.dni}</p>
-            <p><b>Fecha de Nacimiento:</b> {paciente.fecha_nacimiento}</p>
+            <p><b>Fecha de Nacimiento:</b> {fechaFormateada}</p>
             <p><b>Obra Social:</b> {paciente.obra_social}</p>
         </article>
     );
