@@ -25,12 +25,17 @@ export const Pacientes = () => {
 
     return (
         <article>
-            <h2>Pacientes</h2>
-            <Link to="/pacientes/crear" role="button">Nuevo Paciente</Link>
+            <h2>Listado de Pacientes</h2>
+            <Link className="boton" to="/pacientes/crear">Nuevo Paciente</Link>
+
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th><th>Nombre</th><th>Apellido</th><th>DNI</th><th>Acciones</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,11 +45,12 @@ export const Pacientes = () => {
                             <td>{p.nombre}</td>
                             <td>{p.apellido}</td>
                             <td>{p.dni}</td>
-                            
                             <td>
-                                <Link to={`/pacientes/${p.id_paciente}`}>Ver detalles</Link>{" "}
-                                <Link to={`/pacientes/${p.id_paciente}/modificar`}>Editar</Link>{" "}
-                                <button onClick={() => handleEliminar(p.id_paciente)}>Eliminar</button>
+                                <div className="acciones">
+                                    <Link className="boton" to={`/pacientes/${p.id_paciente}`}>Ver Detalles</Link>
+                                    <Link className="boton" to={`/pacientes/${p.id_paciente}/modificar`}>Editar</Link>
+                                    <button className="eliminar" onClick={() => handleEliminar(p.id_paciente)}>Eliminar</button>
+                                </div>
                             </td>
                         </tr>
                     ))}
