@@ -36,7 +36,7 @@ export const Turnos = () => {
     return (
         <article>
             <h2>Listado de turnos</h2>
-            <Link role="button" to="/turnos/crear">Nuevo turno</Link>
+            <Link className="boton" to="/turnos/crear">Nuevo turno</Link>
 
             <table>
                 <thead>
@@ -57,16 +57,15 @@ export const Turnos = () => {
                             <td>{t.id_turno}</td>
                             <td>{t.paciente}</td>
                             <td>{t.medico}</td>
-                            <td>{new Date(t.fecha).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })}</td>
+                            <td>{new Date(t.fecha).toLocaleDateString("es-AR")}</td>
                             <td>{t.hora ? t.hora.slice(0, 5) : "-"}</td>
-
                             <td>{t.estado}</td>
                             <td>{t.observaciones || "-"}</td>
                             <td>
-                                <div style={{ display: "flex", gap: "5px" }}>
-                                    <Link role="button" to={`/turnos/${t.id_turno}`}>Ver Detalles</Link>
-                                    <Link role="button" to={`/turnos/${t.id_turno}/modificar`}>Editar</Link>
-                                    <button onClick={() => handleEliminar(t.id_turno)}>Eliminar</button>
+                                <div className="acciones">
+                                    <Link className="boton" to={`/turnos/${t.id_turno}`}>Ver Detalles</Link>
+                                    <Link className="boton" to={`/turnos/${t.id_turno}/modificar`}>Editar / Estado</Link>
+                                    <button className="eliminar" onClick={() => handleEliminar(t.id_turno)}>Eliminar</button>
                                 </div>
                             </td>
                         </tr>
