@@ -28,13 +28,20 @@ export const DetallesTurno = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
     if (!turno) return <p>Cargando...</p>;
 
+    const fechaFormateada = turno.fecha
+        ? new Date(turno.fecha).toLocaleDateString("es-AR", {day: "2-digit",month: "2-digit",year: "numeric",})
+        : "-";
+
+
+    const horaFormateada = turno.hora ? turno.hora.slice(0, 5) : "-";
+
     return (
         <article>
             <h2>Detalles del turno</h2>
             <p><b>Paciente:</b> {turno.paciente}</p>
             <p><b>Médico:</b> {turno.medico}</p>
-            <p><b>Fecha:</b> {turno.fecha}</p>
-            <p><b>Hora:</b> {turno.hora}</p>
+            <p><b>Fecha:</b> {fechaFormateada}</p>
+            <p><b>Hora:</b> {horaFormateada}</p>
             <p><b>Estado:</b> {turno.estado}</p>
             <p><b>Observaciones:</b> {turno.observaciones || "Sin observaciones"}</p>
         </article>
