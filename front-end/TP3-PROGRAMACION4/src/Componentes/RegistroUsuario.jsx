@@ -37,12 +37,9 @@ export const RegistroUsuario = () => {
             <h2>Crear usuario</h2>
 
             <form onSubmit={handleSubmit} className="registro-form">
-                <input type="text" placeholder="Nombre" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} required
-                />
-                <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required
-                />
-                <input type="password" placeholder="Contraseña" value={form.contraseña} onChange={(e) => setForm({ ...form, contraseña: e.target.value })} required
-                />
+                <input type="text" placeholder="Nombre" value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} required/>
+                <input type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required/>
+                <input type="password" placeholder="Contraseña" value={form.contraseña} onChange={(e) => setForm({ ...form, contraseña: e.target.value })} required/>
                 <button>Registrar</button>
             </form>
 
