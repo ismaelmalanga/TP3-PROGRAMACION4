@@ -13,7 +13,11 @@ export const ModificarTurno = () => {
             const response = await fetchAuth(`http://localhost:3000/turnos/${id}`);
             const data = await response.json();
             if (response.ok && data.success) {
-                setValues(data.turno);
+                setValues({
+                    ...data.turno,
+                    fecha: data.turno.fecha ? data.turno.fecha.slice(0, 10) : "",
+                    hora: data.turno.hora ? data.turno.hora.slice(0, 5) : "",
+                });
             }
         };
         fetchTurno();
@@ -40,27 +44,24 @@ export const ModificarTurno = () => {
             <h2>Modificar turno</h2>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <label>
-                        Estado
-                        <select
-                            value={values.estado}
-                            onChange={(e) => setValues({ ...values, estado: e.target.value })}
-                        >
+                    <label>Fecha<input type="date" value={values.fecha} onChange={(e) => setValues({ ...values, fecha: e.target.value })} required/></label>
+
+                    <label> Hora<input type="time" value={values.hora} onChange={(e) => setValues({ ...values, hora: e.target.value })} required/></label>
+
+                    <label>Estado
+                        <select value={values.estado} onChange={(e) => setValues({ ...values, estado: e.target.value })}>
                             <option value="pendiente">Pendiente</option>
                             <option value="atendido">Atendido</option>
                             <option value="cancelado">Cancelado</option>
                         </select>
                     </label>
+
                     <label>
                         Observaciones
-                        <textarea
-                            value={values.observaciones}
-                            onChange={(e) =>
-                                setValues({ ...values, observaciones: e.target.value })
-                            }
-                        />
+                        <textarea value={values.observaciones || ""} onChange={(e) =>setValues({ ...values, observaciones: e.target.value })}rows="3"/>
                     </label>
                 </fieldset>
+
                 <input type="submit" value="Guardar cambios" />
             </form>
         </article>
