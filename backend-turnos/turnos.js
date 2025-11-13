@@ -54,20 +54,31 @@ router.post(
     body("id_medico").isInt({ min: 1 }),
     body("fecha").isISO8601(),
     body("hora").matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
-    // 1. AÑADIMOS LA VALIDACIÓN (opcional, como en tu PUT)
-    body("observaciones").optional().isString().isLength({ max: 255 }),
     verificarValidaciones,
     async (req, res) => {
-        const { id_paciente, id_medico, fecha, hora, observaciones } = req.body;
-
-        await db.execute(
-            "INSERT INTO turnos (id_paciente, id_medico, fecha, hora, estado, observaciones) VALUES (?,?,?,?, 'pendiente', ?)",
-            [id_paciente, id_medico, fecha, hora, observaciones || null]
+        const { id_paciente, id_medico, fecha, hora } = req.body;
+        const [turnoExistente] = await db.execute(
+            "SELECT * FROM turnos WHERE id_paciente=? AND id_medico=? AND fecha=? AND hora=?",
+            [id_paciente, id_medico, fecha, hora]
         );
 
-        res.status(201).json({ success: true, message: "Turno creado" });
+        if (turnoExistente.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: " Ya existe un turno para este paciente, médico, fecha y hora.",
+            });
+        }
+
+        await db.execute(
+            "INSERT INTO turnos (id_paciente, id_medico, fecha, hora, estado) VALUES (?,?,?,?, 'pendiente')",
+            [id_paciente, id_medico, fecha, hora]
+        );
+
+        res.status(201).json({ success: true, message: "Turno creado correctamente" });
     }
 );
+
+
 
 // actualizar estado/observaciones del turno
 router.put(
